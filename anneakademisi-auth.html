@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anneakademisi — Giriş Yap / Üye Ol</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --pink: #E8748A;
+  --pink-light: #F9EEF0;
+  --pink-mid: #F2C4CC;
+  --purple: #9B6B9B;
+  --teal: #5AADA8;
+  --dark: #2D2D2D;
+  --mid: #555;
+  --muted: #888;
+  --border: #EFEFEF;
+  --bg: #FAFAFA;
+  --white: #FFFFFF;
+  --error: #E05555;
+  --success: #6BAE75;
+}
+
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  color: var(--dark);
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ── HEADER ── */
+.site-header {
+  background: white;
+  border-bottom: 2px solid var(--border);
+  padding: 16px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-img {
+  width: 40px; height: 40px;
+  background: var(--pink); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: white; font-weight: 800; font-family: 'Nunito', sans-serif;
+}
+.logo-text { font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 800; color: var(--pink); }
+.logo-text span { color: var(--purple); }
+
+.header-back {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 600; font-family: 'Nunito', sans-serif;
+  color: var(--muted); transition: color 0.2s;
+}
+.header-back:hover { color: var(--pink); }
+.header-back svg { width: 16px; height: 16px; }
+
+/* ── LAYOUT ── */
+.auth-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 74px);
+}
+
+/* ── LEFT PANEL ── */
+.auth-visual {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 48px;
+}
+
+.auth-visual img {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.visual-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.65) 100%);
+}
+
+.visual-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+}
+
+.visual-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 8px 16px; border-radius: 100px;
+  font-size: 13px; font-weight: 600; font-family: 'Nunito', sans-serif;
+  margin-bottom: 20px;
+}
+
+.visual-badge::before {
+  content: ''; width: 8px; height: 8px;
+  background: #6BAE75; border-radius: 50%;
+}
+
+.visual-content h2 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 36px; font-weight: 800;
+  line-height: 1.2; margin-bottom: 16px;
+}
+
+.visual-content p {
+  font-size: 16px; opacity: 0.85; line-height: 1.6; margin-bottom: 32px;
+}
+
+.visual-stats {
+  display: flex; gap: 32px;
+}
+
+.vs-item { display: flex; flex-direction: column; gap: 2px; }
+.vs-num { font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 800; }
+.vs-label { font-size: 13px; opacity: 0.7; }
+
+/* ── RIGHT PANEL ── */
+.auth-panel {
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+}
+
+.auth-box {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* ── TABS ── */
+.auth-tabs {
+  display: flex;
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 36px;
+  border: 1px solid var(--border);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  background: white;
+  color: var(--pink);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* ── FORM PANELS ── */
+.form-panel { display: none; }
+.form-panel.active { display: block; }
+
+.form-header { margin-bottom: 28px; }
+.form-header h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 28px; font-weight: 800; color: var(--dark);
+  margin-bottom: 8px;
+}
+.form-header p { font-size: 15px; color: var(--muted); line-height: 1.5; }
+
+/* ── SOCIAL LOGIN ── */
+.social-btns { display: flex; gap: 12px; margin-bottom: 24px; }
+
+.social-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 13px; border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: white; cursor: pointer;
+  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700;
+  color: var(--dark); transition: all 0.2s;
+}
+.social-btn:hover { border-color: var(--pink-mid); background: var(--pink-light); }
+.social-btn img { width: 20px; height: 20px; }
+
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 24px; color: var(--muted); font-size: 13px; font-weight: 600;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+/* ── FORM FIELDS ── */
+.form-group { margin-bottom: 18px; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+label {
+  display: block; font-size: 13px; font-weight: 700;
+  font-family: 'Nunito', sans-serif; color: var(--dark); margin-bottom: 8px;
+}
+
+.input-wrap {
+  position: relative;
+}
+
+.input-wrap svg {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  width: 18px; height: 18px; color: var(--muted); pointer-events: none;
+}
+
+input[type="text"], input[type="email"], input[type="password"], select {
+  width: 100%;
+  padding: 13px 14px 13px 42px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 15px;
+  color: var(--dark);
+  background: white;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  appearance: none;
+}
+
+input:focus, select:focus {
+  border-color: var(--pink);
+  box-shadow: 0 0 0 3px rgba(232,116,138,0.12);
+}
+
+input::placeholder { color: #BBB; }
+
+input.error { border-color: var(--error); }
+.error-msg { font-size: 12px; color: var(--error); font-weight: 600; margin-top: 6px; display: none; }
+input.error + .error-msg { display: block; }
+
+.password-toggle {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); transition: color 0.2s;
+}
+.password-toggle:hover { color: var(--pink); }
+.password-toggle svg { width: 18px; height: 18px; display: block; }
+
+/* ── PASSWORD STRENGTH ── */
+.pw-strength { margin-top: 8px; }
+.pw-bars { display: flex; gap: 4px; margin-bottom: 4px; }
+.pw-bar {
+  height: 3px; flex: 1; border-radius: 100px;
+  background: var(--border); transition: background 0.3s;
+}
+.pw-bar.weak { background: var(--error); }
+.pw-bar.medium { background: var(--pink); }
+.pw-bar.strong { background: var(--success); }
+.pw-label { font-size: 11px; font-weight: 600; color: var(--muted); }
+
+/* ── CHECKBOX ── */
+.checkbox-wrap {
+  display: flex; align-items: flex-start; gap: 10px; cursor: pointer;
+}
+.checkbox-wrap input[type="checkbox"] {
+  width: 18px; height: 18px; padding: 0; margin-top: 1px;
+  accent-color: var(--pink); cursor: pointer; flex-shrink: 0;
+}
+.checkbox-wrap span {
+  font-size: 13px; color: var(--muted); line-height: 1.5; padding: 0;
+}
+.checkbox-wrap span a { color: var(--pink); font-weight: 700; }
+
+/* ── FORGOT PASSWORD ── */
+.form-extras {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+.forgot-link {
+  font-size: 13px; font-weight: 700; font-family: 'Nunito', sans-serif;
+  color: var(--pink); transition: opacity 0.2s;
+}
+.forgot-link:hover { opacity: 0.7; }
+
+/* ── SUBMIT ── */
+.btn-submit {
+  width: 100%; padding: 15px;
+  background: var(--pink); color: white;
+  border: none; border-radius: 10px;
+  font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800;
+  cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(232,116,138,0.35);
+  margin-bottom: 20px;
+}
+.btn-submit:hover { background: #d55f74; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,116,138,0.4); }
+.btn-submit:active { transform: translateY(0); }
+
+/* ── LOADING STATE ── */
+.btn-submit.loading {
+  background: var(--pink-mid); pointer-events: none;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── SWITCH LINK ── */
+.switch-text {
+  text-align: center; font-size: 14px; color: var(--muted);
+}
+.switch-text a {
+  color: var(--pink); font-weight: 700; font-family: 'Nunito', sans-serif;
+  transition: opacity 0.2s;
+}
+.switch-text a:hover { opacity: 0.7; }
+
+/* ── MEMBERSHIP PLAN SELECTOR ── */
+.plan-selector { margin-bottom: 18px; }
+.plan-selector label { margin-bottom: 12px; }
+
+.plan-options { display: flex; flex-direction: column; gap: 10px; }
+
+.plan-option {
+  border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 14px 16px;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 14px;
+  position: relative;
+}
+.plan-option:hover { border-color: var(--pink-mid); background: var(--pink-light); }
+.plan-option.selected { border-color: var(--pink); background: var(--pink-light); }
+
+.plan-option input[type="radio"] {
+  width: 18px; height: 18px; padding: 0;
+  accent-color: var(--pink); cursor: pointer; flex-shrink: 0;
+}
+
+.plan-info { flex: 1; }
+.plan-name {
+  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800;
+  color: var(--dark); margin-bottom: 2px;
+}
+.plan-desc { font-size: 12px; color: var(--muted); }
+
+.plan-price {
+  font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800;
+  color: var(--pink); white-space: nowrap;
+}
+
+.plan-badge {
+  position: absolute; top: -8px; right: 12px;
+  background: var(--pink); color: white;
+  font-size: 10px; font-weight: 700; font-family: 'Nunito', sans-serif;
+  padding: 3px 10px; border-radius: 100px; letter-spacing: 0.5px;
+}
+
+/* ── SUCCESS STATE ── */
+.success-box {
+  text-align: center; padding: 40px 20px;
+  display: none;
+}
+.success-box.show { display: block; }
+.success-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(107,174,117,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px; margin: 0 auto 20px;
+}
+.success-box h2 {
+  font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 800;
+  color: var(--dark); margin-bottom: 10px;
+}
+.success-box p { font-size: 15px; color: var(--muted); line-height: 1.6; margin-bottom: 28px; }
+.btn-go-home {
+  display: inline-block;
+  background: var(--pink); color: white;
+  padding: 14px 32px; border-radius: 10px;
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700;
+  transition: all 0.2s;
+}
+.btn-go-home:hover { background: #d55f74; transform: translateY(-2px); }
+
+/* ── FORGOT PASSWORD MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none; align-items: center; justify-content: center;
+  z-index: 200; backdrop-filter: blur(4px);
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: white; border-radius: 20px; padding: 40px;
+  width: 100%; max-width: 420px; margin: 20px;
+  animation: modalIn 0.3s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
+}
+.modal h2 { font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 800; }
+.modal-close {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--bg); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); transition: all 0.2s;
+}
+.modal-close:hover { background: var(--pink-light); color: var(--pink); }
+.modal-close svg { width: 16px; height: 16px; }
+.modal p { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .auth-layout { grid-template-columns: 1fr; }
+  .auth-visual { display: none; }
+  .auth-panel { padding: 32px 24px; }
+  .site-header { padding: 16px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <a href="#" class="logo">
+    <div class="logo-img">A</div>
+    <span class="logo-text">anne<span>akademisi</span></span>
+  </a>
+  <a href="#" class="header-back">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+    Ana Sayfaya Dön
+  </a>
+</header>
+
+<!-- LAYOUT -->
+<div class="auth-layout">
+
+  <!-- LEFT: VISUAL -->
+  <div class="auth-visual">
+    <img src="https://images.unsplash.com/photo-1531983412531-1f49a365ffed?w=900&q=80" alt="Anne ve bebek">
+    <div class="visual-overlay"></div>
+    <div class="visual-content">
+      <div class="visual-badge">48.000+ Anne Bize Güveniyor</div>
+      <h2>Anneliğin her<br>adımında<br>yanındayız 🌸</h2>
+      <p>Hamilelikten okul öncesine, uzman içerikler ve<br>sizi anlayan bir topluluk sizi bekliyor.</p>
+      <div class="visual-stats">
+        <div class="vs-item">
+          <span class="vs-num">48K+</span>
+          <span class="vs-label">Aktif Anne</span>
+        </div>
+        <div class="vs-item">
+          <span class="vs-num">1.200+</span>
+          <span class="vs-label">Uzman İçerik</span>
+        </div>
+        <div class="vs-item">
+          <span class="vs-num">4.9★</span>
+          <span class="vs-label">Kullanıcı Puanı</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: FORM -->
+  <div class="auth-panel">
+    <div class="auth-box">
+
+      <!-- TABS -->
+      <div class="auth-tabs">
+        <button class="tab-btn active" onclick="switchTab('login')">Giriş Yap</button>
+        <button class="tab-btn" onclick="switchTab('register')">Üye Ol</button>
+      </div>
+
+      <!-- ── GİRİŞ YAP ── -->
+      <div id="panel-login" class="form-panel active">
+        <div class="form-header">
+          <h1>Tekrar hoş geldin! 👋</h1>
+          <p>Hesabına giriş yap, kaldığın yerden devam et.</p>
+        </div>
+
+        <div class="social-btns">
+          <button class="social-btn">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+            Google ile Giriş
+          </button>
+          <button class="social-btn">
+            <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook">
+            Facebook
+          </button>
+        </div>
+
+        <div class="divider">veya e-posta ile</div>
+
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label>E-posta Adresi</label>
+            <div class="input-wrap">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/></svg>
+              <input type="email" id="login-email" placeholder="ornek@email.com">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Şifre</label>
+            <div class="input-wrap">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              <input type="password" id="login-password" placeholder="Şifrenizi girin">
+              <button type="button" class="password-toggle" onclick="togglePassword('login-password', this)">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-extras">
+            <label class="checkbox-wrap">
+              <input type="checkbox">
+              <span>Beni hatırla</span>
+            </label>
+            <a href="#" class="forgot-link" onclick="openForgot(event)">Şifremi unuttum</a>
+          </div>
+
+          <button type="submit" class="btn-submit" id="login-btn">Giriş Yap</button>
+        </form>
+
+        <p class="switch-text">
+          Hesabın yok mu? <a href="#" onclick="switchTab('register')">Ücretsiz üye ol →</a>
+        </p>
+      </div>
+
+      <!-- ── ÜYE OL ── -->
+      <div id="panel-register" class="form-panel">
+
+        <div id="register-form-wrap">
+          <div class="form-header">
+            <h1>Aramıza katıl! 🌸</h1>
+            <p>Ücretsiz hesap oluştur, binlerce içeriğe eriş.</p>
+          </div>
+
+          <div class="social-btns">
+            <button class="social-btn">
+              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+              Google ile Kayıt
+            </button>
+            <button class="social-btn">
+              <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook">
+              Facebook
+            </button>
+          </div>
+
+          <div class="divider">veya e-posta ile</div>
+
+          <form onsubmit="handleRegister(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Ad</label>
+                <div class="input-wrap">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                  <input type="text" placeholder="Adınız">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Soyad</label>
+                <div class="input-wrap">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                  <input type="text" placeholder="Soyadınız">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>E-posta Adresi</label>
+              <div class="input-wrap">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/></svg>
+                <input type="email" placeholder="ornek@email.com">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Şifre</label>
+              <div class="input-wrap">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                <input type="password" id="reg-password" placeholder="En az 8 karakter" oninput="checkStrength(this.value)">
+                <button type="button" class="password-toggle" onclick="togglePassword('reg-password', this)">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                </button>
+              </div>
+              <div class="pw-strength" id="pw-strength" style="display:none">
+                <div class="pw-bars">
+                  <div class="pw-bar" id="bar1"></div>
+                  <div class="pw-bar" id="bar2"></div>
+                  <div class="pw-bar" id="bar3"></div>
+                </div>
+                <span class="pw-label" id="pw-label"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Ben kimim?</label>
+              <div class="input-wrap">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                <select>
+                  <option value="">Seçiniz...</option>
+                  <option>Anne adayıyım (hamile)</option>
+                  <option>Yeni anneydim (0-1 yaş bebek)</option>
+                  <option>Bebeğim 1-2 yaşında</option>
+                  <option>Çocuğum 2-6 yaşında</option>
+                  <option>Henüz hamile değilim, planlıyorum</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- PLAN SELECTOR -->
+            <div class="plan-selector">
+              <label>Üyelik Planı</label>
+              <div class="plan-options">
+                <label class="plan-option selected" onclick="selectPlan(this)">
+                  <input type="radio" name="plan" value="free" checked>
+                  <div class="plan-info">
+                    <div class="plan-name">Ücretsiz Üyelik</div>
+                    <div class="plan-desc">Temel içeriklere erişim</div>
+                  </div>
+                  <div class="plan-price">₺0</div>
+                </label>
+                <label class="plan-option" onclick="selectPlan(this)">
+                  <div class="plan-badge">ÖNERİLEN</div>
+                  <input type="radio" name="plan" value="akademi">
+                  <div class="plan-info">
+                    <div class="plan-name">Akademi Üyeliği</div>
+                    <div class="plan-desc">İlk ay ücretsiz, sonra aylık</div>
+                  </div>
+                  <div class="plan-price">₺49/ay</div>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="checkbox-wrap">
+                <input type="checkbox" required>
+                <span><a href="#">Kullanım Koşulları</a>'nı ve <a href="#">Gizlilik Politikası</a>'nı okudum, kabul ediyorum.</span>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label class="checkbox-wrap">
+                <input type="checkbox">
+                <span>Haftalık içerik bültenine abone olmak istiyorum.</span>
+              </label>
+            </div>
+
+            <button type="submit" class="btn-submit" id="register-btn">Ücretsiz Üye Ol</button>
+          </form>
+
+          <p class="switch-text">
+            Zaten hesabın var mı? <a href="#" onclick="switchTab('login')">Giriş yap →</a>
+          </p>
+        </div>
+
+        <!-- SUCCESS STATE -->
+        <div class="success-box" id="register-success">
+          <div class="success-icon">🎉</div>
+          <h2>Aramıza hoş geldin!</h2>
+          <p>Hesabın başarıyla oluşturuldu. E-posta adresine bir doğrulama maili gönderdik.</p>
+          <a href="#" class="btn-go-home">Ana Sayfaya Git →</a>
+        </div>
+
+      </div>
+      <!-- /panel-register -->
+
+    </div>
+  </div>
+</div>
+
+<!-- FORGOT PASSWORD MODAL -->
+<div class="modal-overlay" id="forgot-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Şifremi Unuttum</h2>
+      <button class="modal-close" onclick="closeForgot()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <p>E-posta adresinizi girin, size şifre sıfırlama bağlantısı gönderelim.</p>
+    <form onsubmit="handleForgot(event)">
+      <div class="form-group">
+        <label>E-posta Adresi</label>
+        <div class="input-wrap">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/></svg>
+          <input type="email" placeholder="ornek@email.com">
+        </div>
+      </div>
+      <button type="submit" class="btn-submit" style="margin-bottom:0">Sıfırlama Maili Gönder</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach((b,i) => {
+      b.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
+    });
+    document.getElementById('panel-login').classList.toggle('active', tab === 'login');
+    document.getElementById('panel-register').classList.toggle('active', tab === 'register');
+  }
+
+  function togglePassword(id, btn) {
+    const input = document.getElementById(id);
+    const isText = input.type === 'text';
+    input.type = isText ? 'password' : 'text';
+    btn.querySelector('svg').style.opacity = isText ? '1' : '0.5';
+  }
+
+  function checkStrength(val) {
+    const el = document.getElementById('pw-strength');
+    const label = document.getElementById('pw-label');
+    const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3')];
+    if (!val) { el.style.display = 'none'; return; }
+    el.style.display = 'block';
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val) && /[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    const levels = [['weak','Zayıf şifre'], ['medium','Orta güçte'], ['strong','Güçlü şifre']];
+    bars.forEach((b, i) => { b.className = 'pw-bar'; if (i < score) b.classList.add(levels[score-1][0]); });
+    label.textContent = levels[score-1][1];
+    label.style.color = score === 1 ? 'var(--error)' : score === 2 ? 'var(--pink)' : 'var(--success)';
+  }
+
+  function selectPlan(el) {
+    document.querySelectorAll('.plan-option').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+    const isAkademi = el.querySelector('input').value === 'akademi';
+    document.getElementById('register-btn').textContent = isAkademi ? '1 Ay Ücretsiz Başla' : 'Ücretsiz Üye Ol';
+  }
+
+  function handleLogin(e) {
+    e.preventDefault();
+    const btn = document.getElementById('login-btn');
+    btn.classList.add('loading');
+    btn.innerHTML = '<div class="spinner"></div> Giriş yapılıyor...';
+    setTimeout(() => {
+      btn.classList.remove('loading');
+      btn.innerHTML = 'Giriş Yap';
+      alert('Giriş başarılı! (Demo)');
+    }, 1800);
+  }
+
+  function handleRegister(e) {
+    e.preventDefault();
+    const btn = document.getElementById('register-btn');
+    btn.classList.add('loading');
+    btn.innerHTML = '<div class="spinner"></div> Hesap oluşturuluyor...';
+    setTimeout(() => {
+      document.getElementById('register-form-wrap').style.display = 'none';
+      document.getElementById('register-success').classList.add('show');
+    }, 1800);
+  }
+
+  function openForgot(e) { e.preventDefault(); document.getElementById('forgot-modal').classList.add('show'); }
+  function closeForgot() { document.getElementById('forgot-modal').classList.remove('show'); }
+
+  function handleForgot(e) {
+    e.preventDefault();
+    closeForgot();
+    alert('Şifre sıfırlama maili gönderildi! (Demo)');
+  }
+</script>
+</body>
+</html>
